@@ -2,6 +2,8 @@ import subprocess
 import sys
 import os
 
+#todo support splited
+#todo logd method tracing
 
 def list_packages(name):
     print(subprocess.getoutput(f"adb shell pm list packages | grep {name}"))
