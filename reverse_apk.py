@@ -12,12 +12,28 @@ def get_path_by_package_name(package):
 
 
 def get_app_by_path(paths):
+    print(paths)
+    paths_splinted = paths.split("\n")
+    if len(paths.split("split_config")) > 1:
+        paths_splinted = paths.split("\n")
+        print("Splited App")
+        print("Getting All Parts")
+        for path in paths_splinted:
+            path_final = path.split("package:")[1]
+            subprocess.getoutput(f"adb pull {path_final}")
+        return paths_splinted
     path = paths.split("apk")[0] + "apk"
     path_final = path.split("package:")[1]
     subprocess.getoutput(f"adb pull {path_final}")
+    return paths_splinted
 
 
-def unpackage_apk():
+def unpackage_apk(paths):
+    if len(paths) > 1:
+        for path in paths:
+            name = path.split('/')[-1]
+            subprocess.getoutput(f"apktool d {name}")
+        return
     subprocess.getoutput("apktool d base.apk")
 
 
@@ -56,14 +72,14 @@ def reverse_by_package(package, is_debuggable):
     print("Identificando caminho do aplicativo\n")
     paths = get_path_by_package_name(package)
     print("Clonando aplicativo\n")
-    print(get_app_by_path(paths))
+    final_paths = get_app_by_path(paths)
     print("Desempacotando aplicativo\n")
-    print(unpackage_apk())
+    unpackage_apk(final_paths)
     manifest = get_android_manifest()
     if is_debuggable:
-        turn_debuggable(manifest, package)
+       turn_debuggable(manifest, package)
     else:
-        get_entry_point(manifest)
+       get_entry_point(manifest)
 
 
 def print_options():
