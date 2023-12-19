@@ -5,7 +5,7 @@ python reverse_apk.py -h
 ```
 To help
 ```
-python reverse_apk.py  -n <packagename>
+python reverse_apk.py  -n <name>
 ```
 get package names that contains a string
 ```
